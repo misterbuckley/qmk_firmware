@@ -3,6 +3,7 @@
 // #define USE_I2C
 
 #define TAPPING_TERM 200
+#define TAPPING_TOGGLE 2
 
 #define MOUSEKEY_DELAY 0
 #define MOUSEKEY_INTERVAL 16
