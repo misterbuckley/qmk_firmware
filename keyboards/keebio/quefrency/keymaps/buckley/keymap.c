@@ -180,12 +180,7 @@ void td_lock_finished(qk_tap_dance_state_t *state, void *user_data) {
     if (!state->pressed) {
       register_code(KC_NLCK);
 
-      if (layer_state_is(NUMPAD)) {
-        layer_off(NUMPAD);
-
-      } else {
-        layer_on(NUMPAD);
-      }
+      layer_invert(NUMPAD);
     }
   }
 
