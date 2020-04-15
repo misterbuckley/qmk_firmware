@@ -31,14 +31,16 @@ enum tap_dances {
   TD_F1,
   TD_F2,
   TD_F3,
+  TD_MACRO1,
+  TD_MACRO2,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [BASE] = LAYOUT_65_with_macro(
-    KC_VOLU,     TT(YUIOPQWERT), KC_GESC,     KC_1,    KC_2,    KC_3,   KC_4,   KC_5, KC_6,              KC_7,    KC_8,      KC_9,      KC_0,      KC_MINS, KC_EQL,         KC_BSPC, KC_DEL, KC_HOME, \
-    KC_VOLD,     _______,        KC_TAB,      KC_Q,    KC_W,    KC_E,   KC_R,   KC_T, KC_Y,              KC_U,    KC_I,      KC_O,      KC_P,      KC_LBRC, KC_RBRC,        KC_BSLS, KC_PGUP, \
-    KC_MUTE,     _______,        TD(TD_CAPS), KC_A,    KC_S,    KC_D,   KC_F,   KC_G, KC_H,              KC_J,    KC_K,      KC_L,      KC_SCLN,   KC_QUOT, LT(FN, KC_ENT), KC_PGDN, \
-    KC_MPLY,     _______,        KC_LSFT,     KC_Z,    KC_X,    KC_C,   KC_V,   KC_B, KC_N,              KC_M,    KC_COMM,   KC_DOT,    KC_SLSH,   KC_RSFT, KC_UP,          KC_END, \
+    KC_VOLU,     TD(TD_MACRO1),  KC_GESC,     KC_1,    KC_2,    KC_3,   KC_4,   KC_5, KC_6,              KC_7,    KC_8,      KC_9,      KC_0,      KC_MINS, KC_EQL,         KC_BSPC, KC_DEL, KC_HOME, \
+    KC_VOLD,     TD(TD_MACRO2),  KC_TAB,      KC_Q,    KC_W,    KC_E,   KC_R,   KC_T, KC_Y,              KC_U,    KC_I,      KC_O,      KC_P,      KC_LBRC, KC_RBRC,        KC_BSLS, KC_PGUP, \
+    KC_MUTE,     DM_RSTP,        TD(TD_CAPS), KC_A,    KC_S,    KC_D,   KC_F,   KC_G, KC_H,              KC_J,    KC_K,      KC_L,      KC_SCLN,   KC_QUOT, LT(FN, KC_ENT), KC_PGDN, \
+    KC_MPLY,     TT(YUIOPQWERT), KC_LSFT,     KC_Z,    KC_X,    KC_C,   KC_V,   KC_B, KC_N,              KC_M,    KC_COMM,   KC_DOT,    KC_SLSH,   KC_RSFT, KC_UP,          KC_END, \
     TD(TD_LOCK), TD(TD_SHOT),    KC_LCTL,     KC_LALT, KC_LGUI, MO(FN), KC_SPC,       LT(MOUSE, KC_SPC), XXXXXXX, TD(TD_F1), TD(TD_F2), TD(TD_F3), KC_LEFT, KC_DOWN,        KC_RGHT
   ),
 
@@ -75,9 +77,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 };
 
-// ========================= F1 key =========================
+// ========================= Dynamic macro 1 =========================
 
-void td_f1_finished(qk_tap_dance_state_t *state, void *user_data) {
+void td_macro1(qk_tap_dance_state_t *state, void *user_data) {
   keyrecord_t kr;
   kr.event.pressed = false;
   uint16_t action;
@@ -86,9 +88,6 @@ void td_f1_finished(qk_tap_dance_state_t *state, void *user_data) {
     if (!state->pressed) {
       action = DYN_MACRO_PLAY1;
       process_dynamic_macro(action, &kr);
-
-    } else {
-      register_code(KC_RGUI);
     }
   }
 
@@ -100,14 +99,9 @@ void td_f1_finished(qk_tap_dance_state_t *state, void *user_data) {
   }
 }
 
-void td_f1_reset(qk_tap_dance_state_t *state, void *user_data) {
-  unregister_code(KC_A);
-  unregister_code(KC_RGUI);
-}
+// ========================= Dynamic macro 2 =========================
 
-// ========================= F2 key =========================
-
-void td_f2_finished(qk_tap_dance_state_t *state, void *user_data) {
+void td_macro2(qk_tap_dance_state_t *state, void *user_data) {
   keyrecord_t kr;
   kr.event.pressed = false;
   uint16_t action;
@@ -116,9 +110,6 @@ void td_f2_finished(qk_tap_dance_state_t *state, void *user_data) {
     if (!state->pressed) {
       action = DYN_MACRO_PLAY2;
       process_dynamic_macro(action, &kr);
-
-    } else {
-      register_code(KC_RALT);
     }
   }
 
@@ -130,22 +121,47 @@ void td_f2_finished(qk_tap_dance_state_t *state, void *user_data) {
   }
 }
 
+// ========================= F1 key =========================
+
+void td_f1_finished(qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    if (!state->pressed) {
+      register_code(KC_MPRV);
+
+    } else {
+      register_code(KC_RGUI);
+    }
+  }
+}
+
+void td_f1_reset(qk_tap_dance_state_t *state, void *user_data) {
+  unregister_code(KC_MPRV);
+  unregister_code(KC_RGUI);
+}
+
+// ========================= F2 key =========================
+
+void td_f2_finished(qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    if (!state->pressed) {
+      register_code(KC_MPLY);
+    } else {
+      register_code(KC_RALT);
+    }
+  }
+}
+
 void td_f2_reset(qk_tap_dance_state_t *state, void *user_data) {
+  unregister_code(KC_MPLY);
   unregister_code(KC_RALT);
 }
 
 // ========================= F3 key =========================
 
 void td_f3_finished(qk_tap_dance_state_t *state, void *user_data) {
-  keyrecord_t kr;
-  kr.event.pressed = true;
-  uint16_t action;
-
   if (state->count == 1) {
     if (!state->pressed) {
-      action = DYN_REC_STOP;
-      process_dynamic_macro(action, &kr);
-
+      register_code(KC_MNXT);
     } else {
       register_code(KC_RCTL);
     }
@@ -153,6 +169,7 @@ void td_f3_finished(qk_tap_dance_state_t *state, void *user_data) {
 }
 
 void td_f3_reset(qk_tap_dance_state_t *state, void *user_data) {
+  unregister_code(KC_MNXT);
   unregister_code(KC_RCTL);
 }
 
@@ -215,6 +232,8 @@ qk_tap_dance_action_t tap_dance_actions[] = {
   [TD_F1] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_f1_finished, td_f1_reset),
   [TD_F2] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_f2_finished, td_f2_reset),
   [TD_F3] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_f3_finished, td_f3_reset),
+  [TD_MACRO1] = ACTION_TAP_DANCE_FN(td_macro1),
+  [TD_MACRO2] = ACTION_TAP_DANCE_FN(td_macro2),
 };
 
 // vim:nowrap
