@@ -126,7 +126,8 @@ void td_macro2(qk_tap_dance_state_t *state, void *user_data) {
 void td_f1_finished(qk_tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
     if (!state->pressed) {
-      register_code(KC_MPRV);
+      tap_code16(LCTL(KC_SPC));
+      SEND_STRING("p");
 
     } else {
       register_code(KC_RGUI);
@@ -135,7 +136,6 @@ void td_f1_finished(qk_tap_dance_state_t *state, void *user_data) {
 }
 
 void td_f1_reset(qk_tap_dance_state_t *state, void *user_data) {
-  unregister_code(KC_MPRV);
   unregister_code(KC_RGUI);
 }
 
@@ -145,6 +145,8 @@ void td_f2_finished(qk_tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
     if (!state->pressed) {
       register_code(KC_MPLY);
+      unregister_code(KC_MPLY);
+
     } else {
       register_code(KC_RALT);
     }
@@ -152,7 +154,6 @@ void td_f2_finished(qk_tap_dance_state_t *state, void *user_data) {
 }
 
 void td_f2_reset(qk_tap_dance_state_t *state, void *user_data) {
-  unregister_code(KC_MPLY);
   unregister_code(KC_RALT);
 }
 
@@ -161,7 +162,9 @@ void td_f2_reset(qk_tap_dance_state_t *state, void *user_data) {
 void td_f3_finished(qk_tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
     if (!state->pressed) {
-      register_code(KC_MNXT);
+      tap_code16(LCTL(KC_SPC));
+      SEND_STRING("n");
+
     } else {
       register_code(KC_RCTL);
     }
@@ -169,7 +172,6 @@ void td_f3_finished(qk_tap_dance_state_t *state, void *user_data) {
 }
 
 void td_f3_reset(qk_tap_dance_state_t *state, void *user_data) {
-  unregister_code(KC_MNXT);
   unregister_code(KC_RCTL);
 }
 
@@ -209,13 +211,13 @@ void td_caps_finished(qk_tap_dance_state_t *state, void *user_data) {
 
     } else {
       register_code(KC_CAPS);
+      unregister_code(KC_CAPS);
     }
   }
 }
 
 void td_caps_reset (qk_tap_dance_state_t *state, void *user_data) {
   unregister_code(KC_LCTL);
-  unregister_code(KC_CAPS);
 }
 
 // ==================================================
