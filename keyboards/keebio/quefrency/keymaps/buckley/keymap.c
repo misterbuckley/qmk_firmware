@@ -45,7 +45,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [YUIOPQWERT] = LAYOUT_65_with_macro(
-    _______, _______, _______, KC_7,    KC_8,    KC_9,    KC_0,    _______, _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    _______, _______, _______, \
+    _______, _______, _______, KC_7,    KC_8,    KC_9,    KC_0,    _______, _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    _______, _______, KC_ESC, \
     _______, _______, _______, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    _______, _______, _______, _______, \
     _______, _______, _______, KC_H,    KC_J,    KC_K,    KC_L,    _______, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    _______, _______, _______, \
     _______, _______, _______, KC_N,    KC_M,    _______, _______, _______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    _______, _______, _______, \
@@ -126,8 +126,7 @@ void td_macro2(qk_tap_dance_state_t *state, void *user_data) {
 void td_f1_finished(qk_tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
     if (!state->pressed) {
-      tap_code16(LCTL(KC_SPC));
-      SEND_STRING("p");
+      // do nothing if tapped
 
     } else {
       register_code(KC_RGUI);
@@ -144,8 +143,7 @@ void td_f1_reset(qk_tap_dance_state_t *state, void *user_data) {
 void td_f2_finished(qk_tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
     if (!state->pressed) {
-      register_code(KC_MPLY);
-      unregister_code(KC_MPLY);
+      // do nothing if tapped
 
     } else {
       register_code(KC_RALT);
@@ -162,8 +160,7 @@ void td_f2_reset(qk_tap_dance_state_t *state, void *user_data) {
 void td_f3_finished(qk_tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
     if (!state->pressed) {
-      tap_code16(LCTL(KC_SPC));
-      SEND_STRING("n");
+      // do nothing if tapped
 
     } else {
       register_code(KC_RCTL);
